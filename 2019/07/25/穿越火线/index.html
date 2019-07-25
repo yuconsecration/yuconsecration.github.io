@@ -32,8 +32,7 @@
     </style>
 
     <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
-<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+</head>
 
 
 <body>
@@ -428,196 +427,18 @@
 <h1 id="2-项目开发"><a href="#2-项目开发" class="headerlink" title="2.项目开发"></a>2.项目开发</h1><h2 id="2-1标签的封装"><a href="#2-1标签的封装" class="headerlink" title="2.1标签的封装"></a>2.1标签的封装</h2><blockquote>
 <p>创建一个名为Tags的脚本，将项目中所有将要使用的标签以const常量的方式进行分装。</p>
 </blockquote>
-<pre class="line-numbers language-cs"><code class="language-cs">using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Tags</span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">string</span> player = <span class="string">"Player"</span>;<span class="comment">//代表玩家</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">string</span> gameController = <span class="string">"GameController"</span>;<span class="comment">//代表游戏控制器</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">string</span> enemy = <span class="string">"Enemy"</span>;<span class="comment">//代表敌人</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">string</span> fader = <span class="string">"Fader"</span>;<span class="comment">//代表淡入淡出的画布</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">string</span> mainCamera = <span class="string">"MainCamera"</span>;<span class="comment">//代表主摄像机</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-public class Tags{
-    public const string player = "Player";//代表玩家
-    public const string gameController = "GameController";//代表游戏控制器
-    public const string enemy = "Enemy";//代表敌人
-    public const string fader = "Fader";//代表淡入淡出的画布
-    public const string mainCamera = "MainCamera";//代表主摄像机
-}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="2-2实现屏幕淡入淡出的效果"><a href="#2-2实现屏幕淡入淡出的效果" class="headerlink" title="2.2实现屏幕淡入淡出的效果"></a>2.2实现屏幕淡入淡出的效果</h2><blockquote>
 <p>1.在场景面板中创建一个空物体，命名为FadeInOut，加入组件GUI Texture，color设置为黑色，Texture设置为swatch_black_dff(在导入的资源中搜索)<br>2.为物体FadeInOut创建一个脚本FadeInOut用来实现屏幕的渐隐渐现</p>
 </blockquote>
-<pre class="line-numbers language-cs"><code class="language-cs">using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;//SceneManager使用的命名空间
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> UnityEngine.SceneManagement;<span class="comment">//SceneManager使用的命名空间</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">FadeInOut</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">float</span> fadeSpeed = <span class="number">1.5f</span>;<span class="comment">//设置渐隐渐现的速度</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">bool</span> sceneStarting = <span class="literal">true</span>;<span class="comment">//设置场景开始，当场景开始时实现渐隐渐现的效果</span></span><br><span class="line">    <span class="keyword">private</span> GUITexture tex;<span class="comment">//设置一个GUITexture类型的组件名为tex</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Start</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        tex = <span class="keyword">this</span>.GetComponent&lt;GUITexture&gt;();<span class="comment">//给组件进行赋值</span></span><br><span class="line">        tex.pixelInset = <span class="keyword">new</span> Rect(<span class="number">0</span>, <span class="number">0</span>, Screen.width, Screen.height);<span class="comment">//给组件初始化，位置为0，0,大小和屏幕一致</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">if</span> (sceneStarting)</span><br><span class="line">        &#123;</span><br><span class="line">            StartScene();<span class="comment">//实现场景的渐现</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">FadeToClear</span>(<span class="params"></span>)<span class="comment">//实现渐现</span></span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        tex.color = Color.Lerp(tex.color, Color.clear, fadeSpeed * Time.deltaTime);<span class="comment">//fadeSpeed * Time.deltaTime表示速度</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">FadeToBlack</span>(<span class="params"></span>)<span class="comment">//实现渐隐</span></span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        tex.color = Color.Lerp(tex.color, Color.black, fadeSpeed * Time.deltaTime);<span class="comment">//tex.color表示当前的颜色，Color.black表示渐变后的颜色</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">StartScene</span>(<span class="params"></span>)<span class="comment">//渐现开始</span></span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        FadeToClear();<span class="comment">//场景开始实现渐现效果</span></span><br><span class="line">        <span class="keyword">if</span> (tex.color.a &lt;= <span class="number">0.05f</span>)<span class="comment">//判断是否变为透明</span></span><br><span class="line">        &#123;</span><br><span class="line">            tex.color = Color.clear;<span class="comment">//将当前的颜色变为彻底透明</span></span><br><span class="line">            tex.enabled = <span class="literal">false</span>;<span class="comment">//禁用GUI组件</span></span><br><span class="line">            sceneStarting = <span class="literal">true</span>;<span class="comment">//将标识位设置为false</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">EndScene</span>(<span class="params"></span>)<span class="comment">//渐隐开始</span></span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        tex.enabled = <span class="literal">true</span>;</span><br><span class="line">        FadeToBlack();</span><br><span class="line">        <span class="keyword">if</span> (tex.color.a &gt;= <span class="number">0.95f</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            SceneManager.LoadScene(<span class="string">"Demo"</span>);<span class="comment">//进行场景跳转到当前场景，进行重复加载</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-public class FadeInOut : MonoBehaviour
-{
-    public float fadeSpeed = 1.5f;//设置渐隐渐现的速度
-    private bool sceneStarting = true;//设置场景开始，当场景开始时实现渐隐渐现的效果
-    private GUITexture tex;//设置一个GUITexture类型的组件名为tex
-    private void Start()
-    {
-        tex = this.GetComponent<GUITexture>();//给组件进行赋值
-        tex.pixelInset = new Rect(0, 0, Screen.width, Screen.height);//给组件初始化，位置为0，0,大小和屏幕一致
-    }
-    private void Update()
-    {
-        if (sceneStarting)
-        {
-            StartScene();//实现场景的渐现
-        }
-    }
-    private void FadeToClear()//实现渐现
-    {
-        tex.color = Color.Lerp(tex.color, Color.clear, fadeSpeed * Time.deltaTime);//fadeSpeed * Time.deltaTime表示速度
-    }
-    private void FadeToBlack()//实现渐隐
-    {
-        tex.color = Color.Lerp(tex.color, Color.black, fadeSpeed * Time.deltaTime);//tex.color表示当前的颜色，Color.black表示渐变后的颜色
-    }
-    private void StartScene()//渐现开始
-    {
-        FadeToClear();//场景开始实现渐现效果
-        if (tex.color.a <= 0.05f)//判断是否变为透明
-        {
-            tex.color = Color.clear;//将当前的颜色变为彻底透明
-            tex.enabled = false;//禁用GUI组件
-            sceneStarting = true;//将标识位设置为false
-        }
-    }
-    public void EndScene()//渐隐开始
-    {
-        tex.enabled = true;
-        FadeToBlack();
-        if (tex.color.a >= 0.95f)
-        {
-            SceneManager.LoadScene("Demo");//进行场景跳转到当前场景，进行重复加载
-        }
-
-    }
-}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="2-3按键输入封装"><a href="#2-3按键输入封装" class="headerlink" title="2.3按键输入封装"></a>2.3按键输入封装</h2><blockquote>
 <p>在场景面板中创建一个空物体，命名为GameController，将其Tag设置为GameController，同时设置脚本fps_Input</p>
 </blockquote>
-<pre class="line-numbers language-cs"><code class="language-cs">using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">fps_Input</span> : <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">fps_InputAxis</span><span class="comment">//自定义轴辅助类,存储自定义轴的信息</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">public</span> KeyCode positive;<span class="comment">//定义一个正向按键</span></span><br><span class="line">        <span class="keyword">public</span> KeyCode negative;<span class="comment">//定义一个负向按键</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> Dictionary&lt;<span class="keyword">string</span>, KeyCode&gt; buttons = <span class="keyword">new</span> Dictionary&lt;<span class="keyword">string</span>, KeyCode&gt;();<span class="comment">//定义一个集合</span></span><br><span class="line">    <span class="keyword">public</span> Dictionary&lt;<span class="keyword">string</span>, fps_InputAxis&gt; axis = <span class="keyword">new</span> Dictionary&lt;<span class="keyword">string</span>, fps_InputAxis&gt;();<span class="comment">//定义一个自定义轴集合</span></span><br><span class="line">    <span class="keyword">public</span> List&lt;<span class="keyword">string</span>&gt; unityAxis = <span class="keyword">new</span> List&lt;<span class="keyword">string</span>&gt;();<span class="comment">//定义一个unity内部轴的集合</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Start</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        SetupDefault();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">SetupDefault</span>(<span class="params"><span class="keyword">string</span> type = <span class="string">""</span></span>)<span class="comment">//设置默认的按键，type中的内容表示你要设置什么类型的东西，是按钮类型的、自定义轴还是uinty默认自带的轴</span></span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">if</span>(type == <span class="string">""</span>||type == <span class="string">"buttons"</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (buttons.Count == <span class="number">0</span>)<span class="comment">//说明按钮没有进行过初始化</span></span><br><span class="line">            &#123;</span><br><span class="line">                AddButton(<span class="string">"Fire"</span>, KeyCode.Mouse0);<span class="comment">//鼠标左键设置为开火键</span></span><br><span class="line">                AddButton(<span class="string">"Reload"</span>, KeyCode.R);</span><br><span class="line">                AddButton(<span class="string">"Jump"</span>, KeyCode.Space);</span><br><span class="line">                AddButton(<span class="string">"Crouch"</span>, KeyCode.C);<span class="comment">//蹲下按键</span></span><br><span class="line">                AddButton(<span class="string">"Sprint"</span>, KeyCode.LeftShift);<span class="comment">//加速按键</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (type == <span class="string">""</span> || type == <span class="string">"Axis"</span>)<span class="comment">//初始化自定义轴</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (axis.Count == <span class="number">0</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                AddAxis(<span class="string">"Horizontal"</span>, KeyCode.W, KeyCode.S);</span><br><span class="line">                AddAxis(<span class="string">"Vertical"</span>, KeyCode.A, KeyCode.D);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (type == <span class="string">""</span> || type == <span class="string">"UnityAxis"</span>)<span class="comment">//初始化unity自定义的轴</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (unityAxis.Count == <span class="number">0</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                AddUnityAxis(<span class="string">"Mouse X"</span>);</span><br><span class="line">                AddUnityAxis(<span class="string">"Mouse Y"</span>);</span><br><span class="line">                AddUnityAxis(<span class="string">"Horizontal"</span>);</span><br><span class="line">                AddUnityAxis(<span class="string">"Vertical"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">AddButton</span>(<span class="params"><span class="keyword">string</span> n,KeyCode k</span>)<span class="comment">//添加按钮的方法，两个参数表示按钮的名称和键位</span></span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">if</span> (buttons.ContainsKey(n))<span class="comment">//判断按钮按键集合中是否包含该按钮</span></span><br><span class="line">            buttons[n] = k;<span class="comment">//包含则加入键位</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            buttons.Add(n, k);<span class="comment">//不包含则加入这个按钮和键位</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">AddAxis</span>(<span class="params"><span class="keyword">string</span> n,KeyCode pk,KeyCode nk</span>)<span class="comment">//添加自定义轴的方法，三个参数代表自定义轴的名称，正方向和负方向</span></span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">if</span> (axis.ContainsKey(n))</span><br><span class="line">        &#123;</span><br><span class="line">            axis[n] = <span class="keyword">new</span> fps_InputAxis() &#123; positive = pk, negative = nk &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            axis.Add(n, <span class="keyword">new</span> fps_InputAxis() &#123; positive = pk, negative = nk &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">AddUnityAxis</span>(<span class="params"><span class="keyword">string</span> n</span>)<span class="comment">//添加unity自定义轴的方法</span></span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">if</span> (!unityAxis.Contains(n))</span><br><span class="line">        &#123;</span><br><span class="line">            unityAxis.Add(n);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//外界获取调用的方法</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">GetButton</span>(<span class="params"><span class="keyword">string</span> button</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">if</span> (buttons.ContainsKey(button))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> Input.GetKey(buttons[button]);<span class="comment">//外界获取按钮的方法，只要按键没有被抬起就一直调用</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">GetButtonDown</span>(<span class="params"><span class="keyword">string</span> button</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">if</span> (buttons.ContainsKey(button))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> Input.GetKeyDown(buttons[button]);<span class="comment">//外界获取按钮按下的方法</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">float</span> <span class="title">GetAxis</span>(<span class="params"><span class="keyword">string</span> axis</span>)<span class="comment">//轴返回的值在-1到1之间，外界获取自定义轴的方法</span></span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.unityAxis.Contains(axis))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> Input.GetAxis(axis);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">float</span> <span class="title">GetAxisRaw</span>(<span class="params"><span class="keyword">string</span> axis</span>)<span class="comment">//这里只返回三个值，-1，0，1</span></span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.axis.ContainsKey(axis))<span class="comment">//判断自定义轴是否包含这个轴</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">float</span> val = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">if</span> (Input.GetKey(<span class="keyword">this</span>.axis[axis].positive))</span><br><span class="line">                <span class="keyword">return</span> <span class="number">1</span>;<span class="comment">//按下正向键返回1</span></span><br><span class="line">            <span class="keyword">if</span> (Input.GetKey(<span class="keyword">this</span>.axis[axis].negative))</span><br><span class="line">                <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">return</span> val;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (unityAxis.Contains(axis))<span class="comment">//如果自定义的轴不包含这个轴，就去unity自定义的轴去找</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> Input.GetAxisRaw(axis);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span><span class="comment">//都没有找到该轴</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-public class fps_Input : MonoBehaviour {
-    public class fps_InputAxis//自定义轴辅助类,存储自定义轴的信息
-    {
-        public KeyCode positive;//定义一个正向按键
-        public KeyCode negative;//定义一个负向按键
-    }
-    public Dictionary<string, KeyCode> buttons = new Dictionary<string, KeyCode>();//定义一个集合
-    public Dictionary<string, fps_InputAxis> axis = new Dictionary<string, fps_InputAxis>();//定义一个自定义轴集合
-    public List<string> unityAxis = new List<string>();//定义一个unity内部轴的集合
-    private void Start()
-    {
-        SetupDefault();
-    }
-
-    private void SetupDefault(string type = "")//设置默认的按键，type中的内容表示你要设置什么类型的东西，是按钮类型的、自定义轴还是uinty默认自带的轴
-    {
-        if(type == ""||type == "buttons")
-        {
-            if (buttons.Count == 0)//说明按钮没有进行过初始化
-            {
-                AddButton("Fire", KeyCode.Mouse0);//鼠标左键设置为开火键
-                AddButton("Reload", KeyCode.R);
-                AddButton("Jump", KeyCode.Space);
-                AddButton("Crouch", KeyCode.C);//蹲下按键
-                AddButton("Sprint", KeyCode.LeftShift);//加速按键
-            }
-        }
-        if (type == "" || type == "Axis")//初始化自定义轴
-        {
-            if (axis.Count == 0)
-            {
-                AddAxis("Horizontal", KeyCode.W, KeyCode.S);
-                AddAxis("Vertical", KeyCode.A, KeyCode.D);
-            }
-        }
-        if (type == "" || type == "UnityAxis")//初始化unity自定义的轴
-        {
-            if (unityAxis.Count == 0)
-            {
-                AddUnityAxis("Mouse X");
-                AddUnityAxis("Mouse Y");
-                AddUnityAxis("Horizontal");
-                AddUnityAxis("Vertical");
-            }
-        }
-    }
-    public void AddButton(string n,KeyCode k)//添加按钮的方法，两个参数表示按钮的名称和键位
-    {
-        if (buttons.ContainsKey(n))//判断按钮按键集合中是否包含该按钮
-            buttons[n] = k;//包含则加入键位
-        else
-            buttons.Add(n, k);//不包含则加入这个按钮和键位
-    }
-    private void AddAxis(string n,KeyCode pk,KeyCode nk)//添加自定义轴的方法，三个参数代表自定义轴的名称，正方向和负方向
-    {
-        if (axis.ContainsKey(n))
-        {
-            axis[n] = new fps_InputAxis() { positive = pk, negative = nk };
-        }
-        else
-        {
-            axis.Add(n, new fps_InputAxis() { positive = pk, negative = nk });
-        }
-    }
-    private void AddUnityAxis(string n)//添加unity自定义轴的方法
-    {
-        if (!unityAxis.Contains(n))
-        {
-            unityAxis.Add(n);
-        }
-    }
-    //外界获取调用的方法
-    public bool GetButton(string button)
-    {
-        if (buttons.ContainsKey(button))
-        {
-            return Input.GetKey(buttons[button]);//外界获取按钮的方法，只要按键没有被抬起就一直调用
-        }
-        return false;
-    }
-    public bool GetButtonDown(string button)
-    {
-        if (buttons.ContainsKey(button))
-        {
-            return Input.GetKeyDown(buttons[button]);//外界获取按钮按下的方法
-        }
-        return false;
-    }
-    public float GetAxis(string axis)//轴返回的值在-1到1之间，外界获取自定义轴的方法
-    {
-        if (this.unityAxis.Contains(axis))
-        {
-            return Input.GetAxis(axis);
-        }
-        else
-            return 0;
-    }
-    public float GetAxisRaw(string axis)//这里只返回三个值，-1，0，1
-    {
-        if (this.axis.ContainsKey(axis))//判断自定义轴是否包含这个轴
-        {
-            float val = 0;
-            if (Input.GetKey(this.axis[axis].positive))
-                return 1;//按下正向键返回1
-            if (Input.GetKey(this.axis[axis].negative))
-                return -1;
-            return val;
-        }
-        else if (unityAxis.Contains(axis))//如果自定义的轴不包含这个轴，就去unity自定义的轴去找
-        {
-            return Input.GetAxisRaw(axis);
-        }
-        else//都没有找到该轴
-        {
-            return 0;
-        }
-    }
-}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="2-4用户输入的参数封装及赋值"><a href="#2-4用户输入的参数封装及赋值" class="headerlink" title="2.4用户输入的参数封装及赋值"></a>2.4用户输入的参数封装及赋值</h2>
             </div>
             <hr/>

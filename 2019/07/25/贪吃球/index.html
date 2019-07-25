@@ -437,7 +437,7 @@
 <h2 id="3-3小球操作"><a href="#3-3小球操作" class="headerlink" title="3.3小球操作"></a>3.3小球操作</h2><h3 id="3-3-1通过键盘控制小球的移动"><a href="#3-3-1通过键盘控制小球的移动" class="headerlink" title="3.3.1通过键盘控制小球的移动"></a>3.3.1通过键盘控制小球的移动</h3><blockquote>
 <p>1.在工程面板下创建一个script文件夹用来放置工程的脚本文件<br>2.创建一个脚本sphere</p>
 </blockquote>
-<pre><code>using System.Collections;
+<pre class=" language-cs"><code class="language-cs">using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 public class sphere : MonoBehaviour {
@@ -445,21 +445,22 @@ public class sphere : MonoBehaviour {
     public int  speed = 3;//设置一个速度用来控制键盘移动小球的速度
     // Use this for initialization
     void Start () {//该部分表示只执行一次
-        rgd = GetComponent&lt;Rigidbody&gt;();//得到场景中的刚体组件并将值传递给rgd
+        rgd = GetComponent<Rigidbody>();//得到场景中的刚体组件并将值传递给rgd
     }
     // Update is called once per frame
     void Update () {//该部分表示可以持续执行
-        float h = Input.GetAxis(&quot;Horizontal&quot;);//表示得到水平轴
-        float v = Input.GetAxis(&quot;Vertical&quot;);//表示达到竖直轴
+        float h = Input.GetAxis("Horizontal");//表示得到水平轴
+        float v = Input.GetAxis("Vertical");//表示达到竖直轴
         rgd.AddForce(new Vector3(h, 0, v)*speed);//通知键盘来控制刚体不同方向上的变化
     }
-}</code></pre><h3 id="3-3-2给小球创建一个触发器-注意与碰撞器的区别"><a href="#3-3-2给小球创建一个触发器-注意与碰撞器的区别" class="headerlink" title="3.3.2给小球创建一个触发器(注意与碰撞器的区别)"></a>3.3.2给小球创建一个触发器(注意与碰撞器的区别)</h3><h4 id="3-3-2-1说明"><a href="#3-3-2-1说明" class="headerlink" title="3.3.2.1说明"></a>3.3.2.1说明</h4><blockquote>
+}</code></pre>
+<h3 id="3-3-2给小球创建一个触发器-注意与碰撞器的区别"><a href="#3-3-2给小球创建一个触发器-注意与碰撞器的区别" class="headerlink" title="3.3.2给小球创建一个触发器(注意与碰撞器的区别)"></a>3.3.2给小球创建一个触发器(注意与碰撞器的区别)</h3><h4 id="3-3-2-1说明"><a href="#3-3-2-1说明" class="headerlink" title="3.3.2.1说明"></a>3.3.2.1说明</h4><blockquote>
 <p>碰撞器表示拥有碰撞器的物体不能穿过被碰撞的物体，而触发器表示拥有触发器的物体可以穿过其他物体(前提是其他物体的Inspector属性面板中的box collider中的is trigger必须勾选上)</p>
 </blockquote>
 <h4 id="3-3-2-2创建脚本"><a href="#3-3-2-2创建脚本" class="headerlink" title="3.3.2.2创建脚本"></a>3.3.2.2创建脚本</h4><blockquote>
 <p>在script文件夹下创建一个脚本chufa，用来实现小球的触发操作</p>
 </blockquote>
-<pre><code>using System.Collections;
+<pre class=" language-cs"><code class="language-cs">using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 public class chufa : MonoBehaviour {
@@ -474,21 +475,22 @@ public class chufa : MonoBehaviour {
     //碰撞检测
     //private void OnCollisionEnter(Collision collision)//定义碰撞器的标准格式
     //{
-    //    if (collision .collider.tag == &quot;pickup&quot;)//判断被碰撞物体的标签是否是pickup，防止碰撞到其他物体会执行下面的代码
+    //    if (collision .collider.tag == "pickup")//判断被碰撞物体的标签是否是pickup，防止碰撞到其他物体会执行下面的代码
     //        Destroy(collision.collider.gameObject);//碰撞事件发生后，毁掉被碰撞的物体，表现在游戏中为被碰撞物体消失
     //}
     //触发检测：使用前要将触发器的box collider设置为is trigger
     private void OnTriggerEnter(Collider other)//定义触发器的标准格式
     {
-        if (other.tag == &quot;pickup&quot;) {
+        if (other.tag == "pickup") {
             Destroy(other.gameObject);
         }
 
     }
-}</code></pre><h2 id="3-4食物操作"><a href="#3-4食物操作" class="headerlink" title="3.4食物操作"></a>3.4食物操作</h2><blockquote>
+}</code></pre>
+<h2 id="3-4食物操作"><a href="#3-4食物操作" class="headerlink" title="3.4食物操作"></a>3.4食物操作</h2><blockquote>
 <p>让小球实现旋转来表示食物<br>新建一个脚本cube</p>
 </blockquote>
-<pre><code>using System.Collections;
+<pre class=" language-cs"><code class="language-cs">using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -503,9 +505,11 @@ public class cude : MonoBehaviour {
     void Update () {
         transform.Rotate(new Vector3(0, 1, 0));//物体向y轴方向旋转，每次旋转一度，update下物体一秒大概执行60次，transform表示当前物体
     }
-}</code></pre><h2 id="3-5显示面板操作"><a href="#3-5显示面板操作" class="headerlink" title="3.5显示面板操作"></a>3.5显示面板操作</h2><blockquote>
+}</code></pre>
+<h2 id="3-5显示面板操作"><a href="#3-5显示面板操作" class="headerlink" title="3.5显示面板操作"></a>3.5显示面板操作</h2><blockquote>
 <p>在chufa脚本中添加一些代码<br>在显示的属性面板中，在rect transform属性的左上角按住alt键选择显示在屏幕上的位置</p>
-<pre><code>using System.Collections;
+</blockquote>
+<pre class=" language-cs"><code class="language-cs">using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;//使用test组件时必须引入的命名空间
@@ -515,42 +519,59 @@ public class chufa : MonoBehaviour {
     public Text text;//创建一个Test类型的物体text，需要在属性面板中选择需要插入的物体
     public GameObject wintext;//创建一个物体wintext，需要在属性面板中选择需要插入的物体
     // Use this for initialization
-    void Start () {</code></pre></blockquote>
-<pre><code>}
+    void Start () {
 
-// Update is called once per frame
-void Update () {
-
-}
-//碰撞检测
-//private void OnCollisionEnter(Collision collision)//定义碰撞器的标准格式
-//{
-//    if (collision .collider.tag == &quot;pickup&quot;)//判断被碰撞物体的标签是否是pickup，防止碰撞到其他物体会执行下面的代码
-//        Destroy(collision.collider.gameObject);//碰撞事件发生后，毁掉被碰撞的物体，表现在游戏中为被碰撞物体消失
-//}
-//触发检测：使用前要将触发器的box collider设置为is trigger
-private void OnTriggerEnter(Collider other)//定义触发器的标准格式
-{
-    if (other.tag == &quot;pickup&quot;) {
-        score++;//触发到一个物体分数加一
-        text.text = score.ToString();//将分数转化为string类型传输到text属性值中
-        if (score == 4)//判断当分数达到一定值时执行以下代码
-        {
-            wintext.SetActive(true);//显示整个组件，之前默认不显示该组件
-        }
-        Destroy(other.gameObject);
-        //注意区分碰撞器和触发器相关代码书写的差异
     }
 
-}</code></pre><p>}</p>
-<pre><code>## 3.6相机跟随物体移动
-&gt; 创建一个脚本follow
-</code></pre><p>using System.Collections;<br>using System.Collections.Generic;<br>using UnityEngine;</p>
-<p>public class follow : MonoBehaviour {<br>    public Transform MySphere;//设定一个Transform组件来得到物体的位置，MySphere需要在属性面板中指定物体<br>    private Vector3 offset;//设定一个向量，用来存储x,y,z的位置<br>    // Use this for initialization<br>    void Start () {<br>         offset= transform.position - MySphere.position;//transform表示当前物体的位置，在这里表示相机的位置，这里通过计算相机和物体位置的偏移量来确定相机与物体的位置联系<br>    }<br>    // Update is called once per frame<br>    void Update () {<br>        transform.position = offset + MySphere.position;//表示实施更新物体的位置而保证相机和物体位置的偏移量从而达到控制相机随物体运动的效果<br>    }<br>}</p>
-<pre><code># 4上传游戏
+    // Update is called once per frame
+    void Update () {
 
-&gt; 点击untiy中file目录下的build setting选择build，然后选择需要保存的位置，会产生一个数据文件夹和一个.exe的应用程序，这两个文件缺一不可，数据文件夹中包括游戏需要的一些数据，点击.exe文件就可以开始游戏。
-</code></pre>
+    }
+    //碰撞检测
+    //private void OnCollisionEnter(Collision collision)//定义碰撞器的标准格式
+    //{
+    //    if (collision .collider.tag == "pickup")//判断被碰撞物体的标签是否是pickup，防止碰撞到其他物体会执行下面的代码
+    //        Destroy(collision.collider.gameObject);//碰撞事件发生后，毁掉被碰撞的物体，表现在游戏中为被碰撞物体消失
+    //}
+    //触发检测：使用前要将触发器的box collider设置为is trigger
+    private void OnTriggerEnter(Collider other)//定义触发器的标准格式
+    {
+        if (other.tag == "pickup") {
+            score++;//触发到一个物体分数加一
+            text.text = score.ToString();//将分数转化为string类型传输到text属性值中
+            if (score == 4)//判断当分数达到一定值时执行以下代码
+            {
+                wintext.SetActive(true);//显示整个组件，之前默认不显示该组件
+            }
+            Destroy(other.gameObject);
+            //注意区分碰撞器和触发器相关代码书写的差异
+        }
+
+    }
+}</code></pre>
+<h2 id="3-6相机跟随物体移动"><a href="#3-6相机跟随物体移动" class="headerlink" title="3.6相机跟随物体移动"></a>3.6相机跟随物体移动</h2><blockquote>
+<p>创建一个脚本follow</p>
+</blockquote>
+<pre class=" language-cs"><code class="language-cs">using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class follow : MonoBehaviour {
+    public Transform MySphere;//设定一个Transform组件来得到物体的位置，MySphere需要在属性面板中指定物体
+    private Vector3 offset;//设定一个向量，用来存储x,y,z的位置
+    // Use this for initialization
+    void Start () {
+         offset= transform.position - MySphere.position;//transform表示当前物体的位置，在这里表示相机的位置，这里通过计算相机和物体位置的偏移量来确定相机与物体的位置联系
+    }
+    // Update is called once per frame
+    void Update () {
+        transform.position = offset + MySphere.position;//表示实施更新物体的位置而保证相机和物体位置的偏移量从而达到控制相机随物体运动的效果
+    }
+}</code></pre>
+<h1 id="4上传游戏"><a href="#4上传游戏" class="headerlink" title="4上传游戏"></a>4上传游戏</h1><blockquote>
+<p>点击untiy中file目录下的build setting选择build，然后选择需要保存的位置，会产生一个数据文件夹和一个.exe的应用程序，这两个文件缺一不可，数据文件夹中包括游戏需要的一些数据，点击.exe文件就可以开始游戏。</p>
+</blockquote>
+
             </div>
             <hr/>
 

@@ -32,7 +32,8 @@
     </style>
 
     <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
-<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 
 <body>
@@ -427,7 +428,7 @@
 <h1 id="2-项目开发"><a href="#2-项目开发" class="headerlink" title="2.项目开发"></a>2.项目开发</h1><h2 id="2-1标签的封装"><a href="#2-1标签的封装" class="headerlink" title="2.1标签的封装"></a>2.1标签的封装</h2><blockquote>
 <p>创建一个名为Tags的脚本，将项目中所有将要使用的标签以const常量的方式进行分装。</p>
 </blockquote>
-<pre class=" language-cs"><code class="language-cs">using System.Collections;
+<pre class="line-numbers language-cs"><code class="language-cs">using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -437,11 +438,11 @@ public class Tags{
     public const string enemy = "Enemy";//代表敌人
     public const string fader = "Fader";//代表淡入淡出的画布
     public const string mainCamera = "MainCamera";//代表主摄像机
-}</code></pre>
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="2-2实现屏幕淡入淡出的效果"><a href="#2-2实现屏幕淡入淡出的效果" class="headerlink" title="2.2实现屏幕淡入淡出的效果"></a>2.2实现屏幕淡入淡出的效果</h2><blockquote>
 <p>1.在场景面板中创建一个空物体，命名为FadeInOut，加入组件GUI Texture，color设置为黑色，Texture设置为swatch_black_dff(在导入的资源中搜索)<br>2.为物体FadeInOut创建一个脚本FadeInOut用来实现屏幕的渐隐渐现</p>
 </blockquote>
-<pre class=" language-cs"><code class="language-cs">using System.Collections;
+<pre class="line-numbers language-cs"><code class="language-cs">using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;//SceneManager使用的命名空间
@@ -491,11 +492,11 @@ public class FadeInOut : MonoBehaviour
         }
 
     }
-}</code></pre>
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="2-3按键输入封装"><a href="#2-3按键输入封装" class="headerlink" title="2.3按键输入封装"></a>2.3按键输入封装</h2><blockquote>
 <p>在场景面板中创建一个空物体，命名为GameController，将其Tag设置为GameController，同时设置脚本fps_Input</p>
 </blockquote>
-<pre class=" language-cs"><code class="language-cs">using System.Collections;
+<pre class="line-numbers language-cs"><code class="language-cs">using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -616,7 +617,7 @@ public class fps_Input : MonoBehaviour {
             return 0;
         }
     }
-}</code></pre>
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="2-4用户输入的参数封装及赋值"><a href="#2-4用户输入的参数封装及赋值" class="headerlink" title="2.4用户输入的参数封装及赋值"></a>2.4用户输入的参数封装及赋值</h2>
             </div>
             <hr/>

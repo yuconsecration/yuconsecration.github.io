@@ -426,198 +426,126 @@
 </blockquote>
 <h1 id="2-项目开发"><a href="#2-项目开发" class="headerlink" title="2.项目开发"></a>2.项目开发</h1><h2 id="2-1标签的封装"><a href="#2-1标签的封装" class="headerlink" title="2.1标签的封装"></a>2.1标签的封装</h2><blockquote>
 <p>创建一个名为Tags的脚本，将项目中所有将要使用的标签以const常量的方式进行分装。</p>
-</blockquote>
 <pre><code>using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using UnityEngine;</code></pre></blockquote>
+<p>public class Tags{<br>    public const string player = “Player”;//代表玩家<br>    public const string gameController = “GameController”;//代表游戏控制器<br>    public const string enemy = “Enemy”;//代表敌人<br>    public const string fader = “Fader”;//代表淡入淡出的画布<br>    public const string mainCamera = “MainCamera”;//代表主摄像机<br>}</p>
+<pre><code>## 2.2实现屏幕淡入淡出的效果
+&gt; 1.在场景面板中创建一个空物体，命名为FadeInOut，加入组件GUI Texture，color设置为黑色，Texture设置为swatch_black_dff(在导入的资源中搜索)
+&gt; 2.为物体FadeInOut创建一个脚本FadeInOut用来实现屏幕的渐隐渐现
+</code></pre><p>using System.Collections;<br>using System.Collections.Generic;<br>using UnityEngine;<br>using UnityEngine.SceneManagement;//SceneManager使用的命名空间</p>
+<p>public class FadeInOut : MonoBehaviour<br>{<br>    public float fadeSpeed = 1.5f;//设置渐隐渐现的速度<br>    private bool sceneStarting = true;//设置场景开始，当场景开始时实现渐隐渐现的效果<br>    private GUITexture tex;//设置一个GUITexture类型的组件名为tex<br>    private void Start()<br>    {<br>        tex = this.GetComponent<guitexture>();//给组件进行赋值<br>        tex.pixelInset = new Rect(0, 0, Screen.width, Screen.height);//给组件初始化，位置为0，0,大小和屏幕一致<br>    }<br>    private void Update()<br>    {<br>        if (sceneStarting)<br>        {<br>            StartScene();//实现场景的渐现<br>        }<br>    }<br>    private void FadeToClear()//实现渐现<br>    {<br>        tex.color = Color.Lerp(tex.color, Color.clear, fadeSpeed * Time.deltaTime);//fadeSpeed * Time.deltaTime表示速度<br>    }<br>    private void FadeToBlack()//实现渐隐<br>    {<br>        tex.color = Color.Lerp(tex.color, Color.black, fadeSpeed * Time.deltaTime);//tex.color表示当前的颜色，Color.black表示渐变后的颜色<br>    }<br>    private void StartScene()//渐现开始<br>    {<br>        FadeToClear();//场景开始实现渐现效果<br>        if (tex.color.a &lt;= 0.05f)//判断是否变为透明<br>        {<br>            tex.color = Color.clear;//将当前的颜色变为彻底透明<br>            tex.enabled = false;//禁用GUI组件<br>            sceneStarting = true;//将标识位设置为false<br>        }<br>    }<br>    public void EndScene()//渐隐开始<br>    {<br>        tex.enabled = true;<br>        FadeToBlack();<br>        if (tex.color.a &gt;= 0.95f)<br>        {<br>            SceneManager.LoadScene(“Demo”);//进行场景跳转到当前场景，进行重复加载<br>        }</guitexture></p>
+<pre><code>}</code></pre><p>}</p>
+<pre><code>## 2.3按键输入封装
 
-public class Tags{
-    public const string player = &quot;Player&quot;;&#x2F;&#x2F;代表玩家
-    public const string gameController = &quot;GameController&quot;;&#x2F;&#x2F;代表游戏控制器
-    public const string enemy = &quot;Enemy&quot;;&#x2F;&#x2F;代表敌人
-    public const string fader = &quot;Fader&quot;;&#x2F;&#x2F;代表淡入淡出的画布
-    public const string mainCamera = &quot;MainCamera&quot;;&#x2F;&#x2F;代表主摄像机
-}</code></pre>
-<h2 id="2-2实现屏幕淡入淡出的效果"><a href="#2-2实现屏幕淡入淡出的效果" class="headerlink" title="2.2实现屏幕淡入淡出的效果"></a>2.2实现屏幕淡入淡出的效果</h2><blockquote>
-<p>1.在场景面板中创建一个空物体，命名为FadeInOut，加入组件GUI Texture，color设置为黑色，Texture设置为swatch_black_dff(在导入的资源中搜索)<br>2.为物体FadeInOut创建一个脚本FadeInOut用来实现屏幕的渐隐渐现</p>
-</blockquote>
-<pre><code>using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;&#x2F;&#x2F;SceneManager使用的命名空间
-
-public class FadeInOut : MonoBehaviour
+&gt; 在场景面板中创建一个空物体，命名为GameController，将其Tag设置为GameController，同时设置脚本fps_Input
+</code></pre><p>using System.Collections;<br>using System.Collections.Generic;<br>using UnityEngine;</p>
+<p>public class fps_Input : MonoBehaviour {<br>    public class fps_InputAxis//自定义轴辅助类,存储自定义轴的信息<br>    {<br>        public KeyCode positive;//定义一个正向按键<br>        public KeyCode negative;//定义一个负向按键<br>    }<br>    public Dictionary&lt;string, KeyCode&gt; buttons = new Dictionary&lt;string, KeyCode&gt;();//定义一个集合<br>    public Dictionary&lt;string, fps_InputAxis&gt; axis = new Dictionary&lt;string, fps_InputAxis&gt;();//定义一个自定义轴集合<br>    public List<string> unityAxis = new List<string>();//定义一个unity内部轴的集合<br>    private void Start()<br>    {<br>        SetupDefault();<br>    }</string></string></p>
+<pre><code>private void SetupDefault(string type = &quot;&quot;)//设置默认的按键，type中的内容表示你要设置什么类型的东西，是按钮类型的、自定义轴还是uinty默认自带的轴
 {
-    public float fadeSpeed = 1.5f;&#x2F;&#x2F;设置渐隐渐现的速度
-    private bool sceneStarting = true;&#x2F;&#x2F;设置场景开始，当场景开始时实现渐隐渐现的效果
-    private GUITexture tex;&#x2F;&#x2F;设置一个GUITexture类型的组件名为tex
-    private void Start()
+    if(type == &quot;&quot;||type == &quot;buttons&quot;)
     {
-        tex = this.GetComponent&lt;GUITexture&gt;();&#x2F;&#x2F;给组件进行赋值
-        tex.pixelInset = new Rect(0, 0, Screen.width, Screen.height);&#x2F;&#x2F;给组件初始化，位置为0，0,大小和屏幕一致
-    }
-    private void Update()
-    {
-        if (sceneStarting)
+        if (buttons.Count == 0)//说明按钮没有进行过初始化
         {
-            StartScene();&#x2F;&#x2F;实现场景的渐现
+            AddButton(&quot;Fire&quot;, KeyCode.Mouse0);//鼠标左键设置为开火键
+            AddButton(&quot;Reload&quot;, KeyCode.R);
+            AddButton(&quot;Jump&quot;, KeyCode.Space);
+            AddButton(&quot;Crouch&quot;, KeyCode.C);//蹲下按键
+            AddButton(&quot;Sprint&quot;, KeyCode.LeftShift);//加速按键
         }
     }
-    private void FadeToClear()&#x2F;&#x2F;实现渐现
+    if (type == &quot;&quot; || type == &quot;Axis&quot;)//初始化自定义轴
     {
-        tex.color = Color.Lerp(tex.color, Color.clear, fadeSpeed * Time.deltaTime);&#x2F;&#x2F;fadeSpeed * Time.deltaTime表示速度
-    }
-    private void FadeToBlack()&#x2F;&#x2F;实现渐隐
-    {
-        tex.color = Color.Lerp(tex.color, Color.black, fadeSpeed * Time.deltaTime);&#x2F;&#x2F;tex.color表示当前的颜色，Color.black表示渐变后的颜色
-    }
-    private void StartScene()&#x2F;&#x2F;渐现开始
-    {
-        FadeToClear();&#x2F;&#x2F;场景开始实现渐现效果
-        if (tex.color.a &lt;= 0.05f)&#x2F;&#x2F;判断是否变为透明
+        if (axis.Count == 0)
         {
-            tex.color = Color.clear;&#x2F;&#x2F;将当前的颜色变为彻底透明
-            tex.enabled = false;&#x2F;&#x2F;禁用GUI组件
-            sceneStarting = true;&#x2F;&#x2F;将标识位设置为false
+            AddAxis(&quot;Horizontal&quot;, KeyCode.W, KeyCode.S);
+            AddAxis(&quot;Vertical&quot;, KeyCode.A, KeyCode.D);
         }
     }
-    public void EndScene()&#x2F;&#x2F;渐隐开始
+    if (type == &quot;&quot; || type == &quot;UnityAxis&quot;)//初始化unity自定义的轴
     {
-        tex.enabled = true;
-        FadeToBlack();
-        if (tex.color.a &gt;= 0.95f)
+        if (unityAxis.Count == 0)
         {
-            SceneManager.LoadScene(&quot;Demo&quot;);&#x2F;&#x2F;进行场景跳转到当前场景，进行重复加载
-        }
-
-    }
-}</code></pre>
-<h2 id="2-3按键输入封装"><a href="#2-3按键输入封装" class="headerlink" title="2.3按键输入封装"></a>2.3按键输入封装</h2><blockquote>
-<p>在场景面板中创建一个空物体，命名为GameController，将其Tag设置为GameController，同时设置脚本fps_Input</p>
-</blockquote>
-<pre><code>using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class fps_Input : MonoBehaviour {
-    public class fps_InputAxis&#x2F;&#x2F;自定义轴辅助类,存储自定义轴的信息
-    {
-        public KeyCode positive;&#x2F;&#x2F;定义一个正向按键
-        public KeyCode negative;&#x2F;&#x2F;定义一个负向按键
-    }
-    public Dictionary&lt;string, KeyCode&gt; buttons = new Dictionary&lt;string, KeyCode&gt;();&#x2F;&#x2F;定义一个集合
-    public Dictionary&lt;string, fps_InputAxis&gt; axis = new Dictionary&lt;string, fps_InputAxis&gt;();&#x2F;&#x2F;定义一个自定义轴集合
-    public List&lt;string&gt; unityAxis = new List&lt;string&gt;();&#x2F;&#x2F;定义一个unity内部轴的集合
-    private void Start()
-    {
-        SetupDefault();
-    }
-
-    private void SetupDefault(string type = &quot;&quot;)&#x2F;&#x2F;设置默认的按键，type中的内容表示你要设置什么类型的东西，是按钮类型的、自定义轴还是uinty默认自带的轴
-    {
-        if(type == &quot;&quot;||type == &quot;buttons&quot;)
-        {
-            if (buttons.Count == 0)&#x2F;&#x2F;说明按钮没有进行过初始化
-            {
-                AddButton(&quot;Fire&quot;, KeyCode.Mouse0);&#x2F;&#x2F;鼠标左键设置为开火键
-                AddButton(&quot;Reload&quot;, KeyCode.R);
-                AddButton(&quot;Jump&quot;, KeyCode.Space);
-                AddButton(&quot;Crouch&quot;, KeyCode.C);&#x2F;&#x2F;蹲下按键
-                AddButton(&quot;Sprint&quot;, KeyCode.LeftShift);&#x2F;&#x2F;加速按键
-            }
-        }
-        if (type == &quot;&quot; || type == &quot;Axis&quot;)&#x2F;&#x2F;初始化自定义轴
-        {
-            if (axis.Count == 0)
-            {
-                AddAxis(&quot;Horizontal&quot;, KeyCode.W, KeyCode.S);
-                AddAxis(&quot;Vertical&quot;, KeyCode.A, KeyCode.D);
-            }
-        }
-        if (type == &quot;&quot; || type == &quot;UnityAxis&quot;)&#x2F;&#x2F;初始化unity自定义的轴
-        {
-            if (unityAxis.Count == 0)
-            {
-                AddUnityAxis(&quot;Mouse X&quot;);
-                AddUnityAxis(&quot;Mouse Y&quot;);
-                AddUnityAxis(&quot;Horizontal&quot;);
-                AddUnityAxis(&quot;Vertical&quot;);
-            }
+            AddUnityAxis(&quot;Mouse X&quot;);
+            AddUnityAxis(&quot;Mouse Y&quot;);
+            AddUnityAxis(&quot;Horizontal&quot;);
+            AddUnityAxis(&quot;Vertical&quot;);
         }
     }
-    public void AddButton(string n,KeyCode k)&#x2F;&#x2F;添加按钮的方法，两个参数表示按钮的名称和键位
+}
+public void AddButton(string n,KeyCode k)//添加按钮的方法，两个参数表示按钮的名称和键位
+{
+    if (buttons.ContainsKey(n))//判断按钮按键集合中是否包含该按钮
+        buttons[n] = k;//包含则加入键位
+    else
+        buttons.Add(n, k);//不包含则加入这个按钮和键位
+}
+private void AddAxis(string n,KeyCode pk,KeyCode nk)//添加自定义轴的方法，三个参数代表自定义轴的名称，正方向和负方向
+{
+    if (axis.ContainsKey(n))
     {
-        if (buttons.ContainsKey(n))&#x2F;&#x2F;判断按钮按键集合中是否包含该按钮
-            buttons[n] = k;&#x2F;&#x2F;包含则加入键位
-        else
-            buttons.Add(n, k);&#x2F;&#x2F;不包含则加入这个按钮和键位
+        axis[n] = new fps_InputAxis() { positive = pk, negative = nk };
     }
-    private void AddAxis(string n,KeyCode pk,KeyCode nk)&#x2F;&#x2F;添加自定义轴的方法，三个参数代表自定义轴的名称，正方向和负方向
+    else
     {
-        if (axis.ContainsKey(n))
-        {
-            axis[n] = new fps_InputAxis() { positive = pk, negative = nk };
-        }
-        else
-        {
-            axis.Add(n, new fps_InputAxis() { positive = pk, negative = nk });
-        }
+        axis.Add(n, new fps_InputAxis() { positive = pk, negative = nk });
     }
-    private void AddUnityAxis(string n)&#x2F;&#x2F;添加unity自定义轴的方法
+}
+private void AddUnityAxis(string n)//添加unity自定义轴的方法
+{
+    if (!unityAxis.Contains(n))
     {
-        if (!unityAxis.Contains(n))
-        {
-            unityAxis.Add(n);
-        }
+        unityAxis.Add(n);
     }
-    &#x2F;&#x2F;外界获取调用的方法
-    public bool GetButton(string button)
+}
+//外界获取调用的方法
+public bool GetButton(string button)
+{
+    if (buttons.ContainsKey(button))
     {
-        if (buttons.ContainsKey(button))
-        {
-            return Input.GetKey(buttons[button]);&#x2F;&#x2F;外界获取按钮的方法，只要按键没有被抬起就一直调用
-        }
-        return false;
+        return Input.GetKey(buttons[button]);//外界获取按钮的方法，只要按键没有被抬起就一直调用
     }
-    public bool GetButtonDown(string button)
+    return false;
+}
+public bool GetButtonDown(string button)
+{
+    if (buttons.ContainsKey(button))
     {
-        if (buttons.ContainsKey(button))
-        {
-            return Input.GetKeyDown(buttons[button]);&#x2F;&#x2F;外界获取按钮按下的方法
-        }
-        return false;
+        return Input.GetKeyDown(buttons[button]);//外界获取按钮按下的方法
     }
-    public float GetAxis(string axis)&#x2F;&#x2F;轴返回的值在-1到1之间，外界获取自定义轴的方法
+    return false;
+}
+public float GetAxis(string axis)//轴返回的值在-1到1之间，外界获取自定义轴的方法
+{
+    if (this.unityAxis.Contains(axis))
     {
-        if (this.unityAxis.Contains(axis))
-        {
-            return Input.GetAxis(axis);
-        }
-        else
-            return 0;
+        return Input.GetAxis(axis);
     }
-    public float GetAxisRaw(string axis)&#x2F;&#x2F;这里只返回三个值，-1，0，1
+    else
+        return 0;
+}
+public float GetAxisRaw(string axis)//这里只返回三个值，-1，0，1
+{
+    if (this.axis.ContainsKey(axis))//判断自定义轴是否包含这个轴
     {
-        if (this.axis.ContainsKey(axis))&#x2F;&#x2F;判断自定义轴是否包含这个轴
-        {
-            float val = 0;
-            if (Input.GetKey(this.axis[axis].positive))
-                return 1;&#x2F;&#x2F;按下正向键返回1
-            if (Input.GetKey(this.axis[axis].negative))
-                return -1;
-            return val;
-        }
-        else if (unityAxis.Contains(axis))&#x2F;&#x2F;如果自定义的轴不包含这个轴，就去unity自定义的轴去找
-        {
-            return Input.GetAxisRaw(axis);
-        }
-        else&#x2F;&#x2F;都没有找到该轴
-        {
-            return 0;
-        }
+        float val = 0;
+        if (Input.GetKey(this.axis[axis].positive))
+            return 1;//按下正向键返回1
+        if (Input.GetKey(this.axis[axis].negative))
+            return -1;
+        return val;
     }
-}</code></pre>
-<h2 id="2-4用户输入的参数封装及赋值"><a href="#2-4用户输入的参数封装及赋值" class="headerlink" title="2.4用户输入的参数封装及赋值"></a>2.4用户输入的参数封装及赋值</h2>
+    else if (unityAxis.Contains(axis))//如果自定义的轴不包含这个轴，就去unity自定义的轴去找
+    {
+        return Input.GetAxisRaw(axis);
+    }
+    else//都没有找到该轴
+    {
+        return 0;
+    }
+}</code></pre><p>}</p>
+<pre><code>## 2.4用户输入的参数封装及赋值
+</code></pre>
             </div>
             <hr/>
 

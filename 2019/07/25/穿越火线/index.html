@@ -621,7 +621,72 @@ public class fps_Input : MonoBehaviour {
         }
     }
 }</code></pre>
-<h2 id="2-4用户输入的参数封装及赋值"><a href="#2-4用户输入的参数封装及赋值" class="headerlink" title="2.4用户输入的参数封装及赋值"></a>2.4用户输入的参数封装及赋值</h2>
+<h2 id="2-4用户输入的参数封装及赋值"><a href="#2-4用户输入的参数封装及赋值" class="headerlink" title="2.4用户输入的参数封装及赋值"></a>2.4用户输入的参数封装及赋值</h2><blockquote>
+<p>1.创建一个空物体，作为我们的主角，重命名为FP_Player，将其位置设置为X：16.44，Z：-45.65，加入一个组件character controller(角色控制器)，将参数Center中的Y改为1，Radius改为0.4，后期所有的主角行为都通过角色控制器来操作。<br>2.书写一个脚本表示用户的输入状态，命名为fps_PlayerParameter，将脚本拖动到FP_Player中</p>
+</blockquote>
+<pre class=" language-cs"><code class="language-cs">using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+[RequireComponent(typeof(CharacterController))]
+public class fps_PlayerParameter : MonoBehaviour
+{
+    [HideInInspector]//以下操作是通过用户的输入来操作，不需要显示在用户面板中，因此就隐藏属性
+    public Vector2 inputSmoothLook;//定义一个二维向量表示鼠标的输入
+    [HideInInspector]
+    public Vector2 inputMoveVector;//定义一个二维向量表示按键的输入
+    [HideInInspector]
+    public bool inputCrouch;//是否下蹲
+    [HideInInspector]
+    public bool inputJump;//是否跳跃
+    [HideInInspector]
+    public bool inputSprint;//是否冲刺
+    [HideInInspector]
+    public bool inputFire;//是否开火
+    [HideInInspector]
+    public bool inputReload;//是否装弹
+}</code></pre>
+<blockquote>
+<p>3.创建一个脚本，为上述定义的变量进行赋值，命名为fps_FPInput，拖动到FP_Player中</p>
+</blockquote>
+<pre class=" language-cs"><code class="language-cs">using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class fps_FPInput : MonoBehaviour
+{
+    public bool LockCursor//由于是第一人称视角，不需要显示光标，锁定光标 
+    {
+        get { return Cursor.lockState == CursorLockMode.Locked ? true : false; }//锁定返回true,反则返回false
+        set
+        {
+            Cursor.visible = value;//设定一个鼠标可见的变量
+            Cursor.lockState = value ? CursorLockMode.Locked : CursorLockMode.None;
+        }
+    }
+    private fps_PlayerParameter parameter;//给脚本的参数进行赋值
+    private fps_Input input;
+    void Start()
+    {
+        LockCursor = true;
+        parameter = this.GetComponent<fps_PlayerParameter>();//赋值parameter，通过该脚本所在物体中找到组件fps_PlayerParameter
+        input = GameObject.FindGameObjectWithTag(Tags.gameController).GetComponent<fps_Input>();//赋值input，通过游戏物体的标签区寻找组件fps_Input
+    }
+    private void Update()
+    {
+        InitialInput();
+    }
+    private void InitialInput()//对变量进行赋值
+    {
+        parameter.inputMoveVector = new Vector2(input.GetAxis("Horizontal"), input.GetAxis("Vertical"));
+        parameter.inputSmoothLook = new Vector2(input.GetAxisRaw("Mouse X"), input.GetAxisRaw("Mouse Y"));//通过鼠标控制相机进行旋转来达到视觉旋转的特效
+        parameter.inputCrouch = input.GetButton("Crouch");
+        parameter.inputJump = input.GetButton("Jump");
+        parameter.inputFire = input.GetButton("Fire");
+        parameter.inputSprint = input.GetButton("Sprint");
+        parameter.inputReload = input.GetButton("Reload");
+    }
+}</code></pre>
+
             </div>
             <hr/>
 
